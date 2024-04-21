@@ -1,7 +1,7 @@
 package test;
 import java.util.Random;
 
-public class Tile {
+public  class Tile {
     public final int score;
     public final char letter;
     private Tile(int score, char letter) {
@@ -18,7 +18,7 @@ public class Tile {
     public int hashCode() {
         return java.util.Objects.hash(super.hashCode(), score, letter);
     }
-    public static class Bag
+    public static  class Bag
     {
         private static Bag instance= null;
         private static int num_bags =0;
@@ -26,7 +26,7 @@ public class Tile {
         Tile[] tiles= new Tile[26];
         private Bag()
         {
-             amount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
+            amount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
             for (int i = 0; i < 26; i++) {
                 char letter = (char) ('A' + i); // Calculate the letter based on its position in the alphabet
                 int score = getScore(letter); // Get the score for the letter
@@ -70,35 +70,41 @@ public class Tile {
             {
                 return null;
             }
-            int randomIndex = (int) (Math.random() % 26);
+            int randomIndex = (int) (Math.random() * 26);
             while(amount[randomIndex]==0) // as long as we land on tile with amount 0 we want to get to other
             {
-                randomIndex = (int) (Math.random() % 26);
+                randomIndex = (int) (Math.random() * 26);
             }
             if(amount[randomIndex]!= 0) // we got to a tile that exists
             {
                 amount[randomIndex]-=1;
                 return tiles[randomIndex];
             }
+            return tiles[randomIndex];
         }
         public Tile getTile(char c)
         {
-            if (amount[(int)c]!=0)
-            {
-                amount[(int)c]-=1;
-                return tiles[(int)c];
-            }
-            else
-            {
-                return null;
-            }
+            char leti =c;
+            if (Character.isUpperCase(c) && c >= 'A' && c <= 'Z')
+                if (amount[leti-'A']!=0)
+               {
+                amount[leti-'A']-=1;
+                return tiles[leti-'A'];
+               }
+
+            return null;
+
         }
         public void put(Tile t)
         {
-            int allowed_score= getScore(t.letter);
-            if(amount[(int)t.letter]+1<= allowed_score)
+            int [] max_amount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
+            char letter= t.letter;
+            if (Character.isUpperCase(letter) && letter >= 'A' && letter <= 'Z')
             {
-                amount[(int)t.letter]+=1;
+                int allowed_amount = max_amount[letter - 'A'];
+                if (amount[letter - 'A'] + 1 <= allowed_amount) {
+                    amount[letter - 'A'] += 1;
+                }
             }
         }
         public int size()
@@ -110,7 +116,7 @@ public class Tile {
             }
             return sum;
         }
-        public int[] getQuantites() {
+        public int[] getQuantities() {
             int[] copy_amount = new int[26];
             for (int i = 0; i < 26; i++) {
                 copy_amount[i] = this.amount[i];

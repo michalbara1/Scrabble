@@ -3,12 +3,12 @@ package test;
 
 public class Word
 {
-    Tile tiles;
+    public Tile[] tiles;
     int row;
     int col;
     boolean vertical;
 
-    public Word(Tile tiles, int row, int col, boolean vertical) {
+    public Word(Tile[] tiles, int row, int col, boolean vertical) {
         this.tiles = tiles;
         this.row = row;
         this.col = col;
@@ -30,7 +30,7 @@ public class Word
     public int getRow() {
         return row;
     }
-    public Tile getTiles() {
+    public Tile[] getTiles() {
         return tiles;
     }
 }
