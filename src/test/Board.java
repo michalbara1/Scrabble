@@ -11,7 +11,7 @@ public class Board {
     private final int ROW = 15;
     private final int COL = 15;
     private ArrayList<Word> words;
-    int[][] score = {
+    int[][] score = { //enum
             {9, 1, 1, 2, 1, 1, 1, 9, 1, 1, 1, 2, 1, 1, 9},
             {1, 4, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 4, 1},
             {1, 1, 4, 1, 1, 1, 2, 1, 2, 1, 1, 1, 4, 1, 1},

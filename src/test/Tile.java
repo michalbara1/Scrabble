@@ -75,17 +75,17 @@ public  class Tile {
             {
                 randomIndex = (int) (Math.random() * 26);
             }
-            if(amount[randomIndex]!= 0) // we got to a tile that exists
+            //if(amount[randomIndex]!= 0) // we got to a tile that exists
             {
                 amount[randomIndex]-=1;
                 return tiles[randomIndex];
             }
-            return tiles[randomIndex];
+            //return tiles[randomIndex];
         }
         public Tile getTile(char c)
         {
             char leti =c;
-            if (Character.isUpperCase(c) && c >= 'A' && c <= 'Z')
+            if (c >= 'A' && c <= 'Z')
                 if (amount[leti-'A']!=0)
                {
                 amount[leti-'A']-=1;
@@ -99,7 +99,7 @@ public  class Tile {
         {
             int [] max_amount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
             char letter= t.letter;
-            if (Character.isUpperCase(letter) && letter >= 'A' && letter <= 'Z')
+            if (letter >= 'A' && letter <= 'Z')
             {
                 int allowed_amount = max_amount[letter - 'A'];
                 if (amount[letter - 'A'] + 1 <= allowed_amount) {
@@ -116,7 +116,7 @@ public  class Tile {
             }
             return sum;
         }
-        public int[] getQuantities() {
+        public int[] getQuantities() { //clone
             int[] copy_amount = new int[26];
             for (int i = 0; i < 26; i++) {
                 copy_amount[i] = this.amount[i];
@@ -125,7 +125,7 @@ public  class Tile {
         }
         public static Bag getBag()
         {
-            if(num_bags== 0)
+            if(num_bags== 0) // if instance=null
             {
                 instance= new Bag();
                 num_bags+=1;
