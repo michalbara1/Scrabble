@@ -23,6 +23,7 @@ public class Board {
             {1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1},
             {1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1},
             {1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1},
+            {2, 1, 1, 4, 1, 1, 1, 2, 1, 1, 1, 4, 1, 1, 2},
             {1, 1, 4, 1, 1, 1, 2, 1, 2, 1, 1, 1, 4, 1, 1},
             {1, 4, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 4, 1},
             {9, 1, 1, 2, 1, 1, 1, 9, 1, 1, 1, 2, 1, 1, 9}
@@ -180,7 +181,7 @@ public class Board {
                 Word wordi= new Word(check_word, start_w, end_w,false);
                 check_exist(wordi, new_words);
             }
-            if(board[i][j+w.tiles.length+1]!=null && j+w.tiles.length+1<15)
+            if(board[i][j+w.tiles.length]!=null && j+w.tiles.length<15)
             {
                 start_w=j-1;
                 end_w=j;
@@ -268,53 +269,50 @@ public class Board {
                 check_exist(wordi, new_words);
 
             }
-            if(board[i+w.tiles.length+1][j]!=null && i+w.tiles.length+1<15)
+            if(i+w.tiles.length<15)
             {
-                start_w=i-1;
-                end_w=i;
-                while(board[start_w][j]!=null && start_w>=0)
-                {
-                    start_w-=1;
+                if (board[i + w.tiles.length][j] != null && i + w.tiles.length < 15) {
+                    start_w = i - 1;
+                    end_w = i;
+                    while (board[start_w][j] != null && start_w >= 0) {
+                        start_w -= 1;
+                    }
+                    start_w += 1;
+                    while (board[end_w][j] != null && end_w < 15) {
+                        end_w += 1;
+                    }
+                    Tile[] check_word = new Tile[end_w - start_w];
+                    for (c = start_w, d = 0; c < end_w; c++, d++) {
+                        check_word[d] = board[c][j];
+                    }
+                    Word wordi = new Word(check_word, start_w, end_w, true);
+                    check_exist(wordi, new_words);
                 }
-                start_w+=1;
-                while(board[end_w][j]!=null && end_w<15)
-                {
-                    end_w+=1;
-                }
-                Tile[] check_word= new Tile[end_w- start_w];
-                for(c=start_w,d=0; c<end_w; c++,d++)
-                {
-                    check_word[d]=board[c][j];
-                }
-                Word wordi= new Word(check_word, start_w, end_w,true);
-                check_exist(wordi, new_words);
             }
             for(i=w.row,m=0; i< w.tiles.length+w.row ; i++,m++)
             {
-                if(board[i][j-1]!=null && i-1>=0)
-                {
-                    start_w=j-1;
-                    Word wordi=find_word_vert(start_w, i,false);
-                    check_exist(wordi,  new_words);
-                    if(w.tiles[m]==null)
-                    {
-                        w.tiles[m] = board[i][j];
-                        check_exist(w, new_words);
+                if(j-1>=0) {
+                    if (board[i][j - 1] != null) {
+                        start_w = j - 1;
+                        Word wordi = find_word_vert(start_w, i, false);
+                        check_exist(wordi, new_words);
+                        if (w.tiles[m] == null) {
+                            w.tiles[m] = board[i][j];
+                            check_exist(w, new_words);
+                        }
+
+
                     }
+                    if (board[i][j + 1] != null && j + 1 < 15) {
+                        start_w = j + 1;
+                        Word wordi = find_word_vert(start_w, i, false);
+                        check_exist(wordi, new_words);
+                        if (w.tiles[m] == null) {
+                            w.tiles[m] = board[i][j];
+                            check_exist(w, new_words);
+                        }
 
-
-                }
-                if(board[i][j+1]!=null && j+1<15)
-                {
-                    start_w=j+1;
-                    Word wordi=find_word_vert(start_w, i,false);
-                    check_exist(wordi,  new_words);
-                    if(w.tiles[m]==null)
-                    {
-                        w.tiles[m] = board[i][j];
-                        check_exist(w,new_words);
                     }
-
                 }
             }
             boolean flag_standalone=true; // if this word is not near any word and is full we want to enter her in the board
@@ -377,7 +375,7 @@ public class Board {
         return wordi;
 
     }
-   private void check_exist(Word wordi, ArrayList<Word> new_words) {
+    private void check_exist(Word wordi, ArrayList<Word> new_words) {
         int i;
         boolean flag= true;
         boolean found = true;
@@ -471,6 +469,10 @@ public class Board {
             word_score=totalw_score(w);
             for(i=w.row, m=0; i< w.tiles.length+w.row; i++,m++)
             {
+                if(i>=15)
+                {
+                    break;
+                }
                 if(score[i][j]==9 )
                 {
                     sum += word_score *2;
